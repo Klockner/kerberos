@@ -6,11 +6,12 @@
 package interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
  * @author JamilliF
  */
 public interface InterfaceCliente extends Remote {
-    
+    public void echo(String texto) throws RemoteException;
 }

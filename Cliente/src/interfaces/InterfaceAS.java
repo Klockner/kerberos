@@ -6,6 +6,7 @@
 package interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -13,4 +14,5 @@ import java.rmi.Remote;
  */
 public interface InterfaceAS extends Remote {
     
+    public void chamar(String nomeCliente, InterfaceCliente interfaceCliente) throws RemoteException;
 }

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servidorautenticacaoas;
+package JavaRMI;
 
 import interfaces.InterfaceAS;
+import interfaces.InterfaceCliente;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -19,7 +20,10 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
 
     public ServidorASImplem() throws RemoteException {
     }
-    
-    
+
+    @Override
+    public void chamar(String nomeCliente, InterfaceCliente interfaceCliente) throws RemoteException {
+        System.out.println("Chamar");
+    }
     
 }
