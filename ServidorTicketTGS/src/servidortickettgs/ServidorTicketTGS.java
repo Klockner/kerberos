@@ -14,24 +14,21 @@ import java.rmi.registry.Registry;
  * @author Klockner
  */
 public class ServidorTicketTGS {
-
+    static Registry refSN;
+    
     /**
      * @param args the command line arguments
      * @throws java.rmi.RemoteException
      */
     public static void main(String[] args) throws RemoteException {
-        
         try {
-            Registry refSN = LocateRegistry.getRegistry(1111);
+            refSN = LocateRegistry.getRegistry(1111);
             refSN.list();
-            
-            ServidorTGSImplem servImpl = new ServidorTGSImplem();
-            
-            refSN.rebind("ServerTGS", servImpl);
-            
         } catch (RemoteException ex) {
-            Registry refSN = LocateRegistry.createRegistry(1111);
+            refSN = LocateRegistry.createRegistry(1111);
         }
+        
+        ServidorTGSImplem servTGSImpl = new ServidorTGSImplem();
+        refSN.rebind("ServerTGS", servTGSImpl);
     }
-    
 }

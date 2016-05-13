@@ -23,7 +23,6 @@ public class Cliente {
      * @throws java.rmi.NotBoundException
      */
     public static void main(String[] args) throws NotBoundException {
-        // TODO code application logic here
         try {
             //Para iniciar um serviço de nomes no servidor
             Registry refSN = LocateRegistry.getRegistry("localhost", 1111);
@@ -33,7 +32,7 @@ public class Cliente {
             clienteImplem.echo("Hello world!");
             
             //Id cliente e tempo de validade
-            clienteImplem.solicitarAutenticacao("Gabriel Klockner", 10);
+            clienteImplem.solicitarAutenticacao("Gabriel", 10);
             
         } catch (RemoteException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
