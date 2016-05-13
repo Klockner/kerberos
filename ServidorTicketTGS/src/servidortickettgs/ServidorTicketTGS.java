@@ -8,8 +8,6 @@ package servidortickettgs;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -19,17 +17,20 @@ public class ServidorTicketTGS {
 
     /**
      * @param args the command line arguments
+     * @throws java.rmi.RemoteException
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws RemoteException {
+        
         try {
-            Registry refSN = LocateRegistry.createRegistry(1111);
+            Registry refSN = LocateRegistry.getRegistry(1111);
+            refSN.list();
+            
             ServidorTGSImplem servImpl = new ServidorTGSImplem();
             
             refSN.rebind("ServerTGS", servImpl);
             
         } catch (RemoteException ex) {
-            Logger.getLogger(ServidorTicketTGS.class.getName()).log(Level.SEVERE, null, ex);
+            Registry refSN = LocateRegistry.createRegistry(1111);
         }
     }
     

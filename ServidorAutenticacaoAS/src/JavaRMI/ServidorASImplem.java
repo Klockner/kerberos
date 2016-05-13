@@ -7,6 +7,7 @@ package JavaRMI;
 
 import interfaces.InterfaceAS;
 import interfaces.InterfaceCliente;
+import interfaces.InterfaceTGS;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -27,8 +28,11 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
     }
 
     @Override
-    public void autenticar(String request, InterfaceCliente interfaceCliente) throws RemoteException {
-        System.out.println("Servidor: " + request);
+    public void autenticar(String idCliente, InterfaceCliente interfaceCliente, 
+            InterfaceTGS interfaceTGS, int tempoValidade, int numeroAleatorio) throws RemoteException {
+        System.out.println("Identificação do CLIENTE: " + idCliente);
+        System.out.println("Tempo de validade em minutos: " + tempoValidade);
+        System.out.println("Numero aleatório: " + numeroAleatorio);
     }
     
     

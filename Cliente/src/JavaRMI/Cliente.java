@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author Klockner
  */
 public class Cliente {
-
+    
     /**
      * @param args the command line arguments
      * @throws java.rmi.NotBoundException
@@ -25,13 +25,15 @@ public class Cliente {
     public static void main(String[] args) throws NotBoundException {
         // TODO code application logic here
         try {
-            int portaSN = 1111;
             //Para iniciar um serviço de nomes no servidor
-            Registry refSN = LocateRegistry.getRegistry("localhost", portaSN);
+            Registry refSN = LocateRegistry.getRegistry("localhost", 1111);
             ClienteImplem clienteImplem = new ClienteImplem(refSN);
             
+            //Apenas teste
             clienteImplem.echo("Hello world!");
-            clienteImplem.autenticar("Gabriel Klockner");
+            
+            //Id cliente e tempo de validade
+            clienteImplem.solicitarAutenticacao("Gabriel Klockner", 10);
             
         } catch (RemoteException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);

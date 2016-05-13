@@ -13,6 +13,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Random;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -26,26 +28,28 @@ public class ClienteImplem extends UnicastRemoteObject implements InterfaceClien
     InterfaceAS refAS;
     InterfaceTGS refTGS;
     InterfaceSS refSS;
-    private String idCliente = "Gabriel";
 
     public ClienteImplem(Registry refSN) throws RemoteException, NotBoundException {
         this.refSN = refSN;
         //Retorna a referência do servidor AS
         this.refAS = (InterfaceAS) refSN.lookup("ServerAS");
         //Retorna a referência do servidor TGS
-//        this.refTGS = (InterfaceTGS) refSN.lookup("ServerTGS");
+        this.refTGS = (InterfaceTGS) refSN.lookup("ServerTGS");
 //        //Retorna a referência do servidor SS
 //        this.refSS = (InterfaceSS) refSN.lookup("ServerSS");
-        
     }
 
     @Override
     public void echo(String texto) throws RemoteException {
         refAS.chamar(texto, this);
     }
-    
-    public void autenticar(String idCliente) throws RemoteException {
-        this.idCliente = idCliente;
-        refAS.autenticar(idCliente, this);
+     
+    //Envia uma solicitação m1 de autenticação para o AS
+    public void solicitarAutenticacao(String idCliente, int tempoValidade) throws RemoteException {
+        Random geradorRandom = new Random();
+        int numeroAleatorio = geradorRandom.nextInt();
+        
+        //Faz o primeiro passo do algoritmo
+        refAS.autenticar(idCliente, this, refTGS, tempoValidade, numeroAleatorio);
     }
 }
