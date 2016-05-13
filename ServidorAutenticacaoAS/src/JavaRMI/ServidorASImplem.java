@@ -12,7 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 
 /*Implementa a interface InterfaceAS */
@@ -22,8 +22,15 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
     }
 
     @Override
-    public void chamar(String nomeCliente, InterfaceCliente interfaceCliente) throws RemoteException {
-        System.out.println("Chamar");
+    public void chamar(String texto, InterfaceCliente interfaceCliente) throws RemoteException {
+        System.out.println(texto);
     }
+
+    @Override
+    public void autenticar(String request, InterfaceCliente interfaceCliente) throws RemoteException {
+        System.out.println("Servidor: " + request);
+    }
+    
+    
     
 }

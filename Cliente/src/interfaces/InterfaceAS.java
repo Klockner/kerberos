@@ -10,9 +10,10 @@ import java.rmi.RemoteException;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 public interface InterfaceAS extends Remote {
     
-    public void chamar(String nomeCliente, InterfaceCliente interfaceCliente) throws RemoteException;
+    public void chamar(String texto, InterfaceCliente interfaceCliente) throws RemoteException;
+    public void autenticar(String request, InterfaceCliente interfaceCliente) throws RemoteException;
 }

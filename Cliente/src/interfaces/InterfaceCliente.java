@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 public interface InterfaceCliente extends Remote {
     public void echo(String texto) throws RemoteException;

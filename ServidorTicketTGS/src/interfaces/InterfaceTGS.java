@@ -9,7 +9,7 @@ import java.rmi.Remote;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 public interface InterfaceTGS extends Remote {
     

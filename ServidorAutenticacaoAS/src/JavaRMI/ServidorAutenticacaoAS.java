@@ -5,17 +5,15 @@
  */
 package JavaRMI;
 
-import interfaces.InterfaceAS;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 public class ServidorAutenticacaoAS {
 

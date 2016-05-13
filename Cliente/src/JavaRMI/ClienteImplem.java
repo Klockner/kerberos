@@ -16,7 +16,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 
 /*Implementa a interface InterfaceCliente*/
@@ -42,5 +42,10 @@ public class ClienteImplem extends UnicastRemoteObject implements InterfaceClien
     @Override
     public void echo(String texto) throws RemoteException {
         refAS.chamar(texto, this);
+    }
+    
+    public void autenticar(String idCliente) throws RemoteException {
+        this.idCliente = idCliente;
+        refAS.autenticar(idCliente, this);
     }
 }

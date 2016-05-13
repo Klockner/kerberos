@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 public class ServidorServicoSS {
 

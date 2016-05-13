@@ -9,7 +9,7 @@ import java.rmi.Remote;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 public interface InterfaceCliente extends Remote{
     
