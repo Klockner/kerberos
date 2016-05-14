@@ -11,13 +11,8 @@ import interfaces.InterfaceCliente;
 import interfaces.InterfaceTGS;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 /**
@@ -28,7 +23,7 @@ import javax.crypto.SecretKey;
 /*Implementa a interface InterfaceAS */
 public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS {
     private final Dados database;
-    private String chaveSessao;
+    private String chaveSessao = "essaehachave";
     private int numeroAleatorio;
     
     public ServidorASImplem() throws RemoteException {
@@ -49,44 +44,51 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
             System.out.println("Tempo de validade em minutos: " + tempoValidade);
             System.out.println("Numero aleatório: " + numeroAleatorio);
             this.numeroAleatorio = numeroAleatorio;
+
+            //Criptografar chave sessão
+            cifrar(chaveSessao);
+            //Criptografar número aleatório
+            cifrar(String.valueOf(this.numeroAleatorio));
         } else {
             System.out.println("Usuário não autenticado!");
         }
     }
 
     //Cifrar chave da sessao e numero aleatório para para utilizar no TGS
-    public void cifrar() throws NoSuchAlgorithmException, NoSuchPaddingException, 
-        InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        
-        KeyGenerator keygenerator = KeyGenerator.getInstance("DES");
-        SecretKey chaveDES = keygenerator.generateKey();
+    public void cifrar(String textoParaCifrar) {
+        try {
+            KeyGenerator keygenerator = KeyGenerator.getInstance("DES");
+            SecretKey chaveDES = keygenerator.generateKey();
 
-        Cipher cifraDES;
+            Cipher cifraDES;
 
-        // Cria a cifra 
-        cifraDES = Cipher.getInstance("DES/ECB/PKCS5Padding");
-        
-        // Inicializa a cifra para o processo de encriptação
-        cifraDES.init(Cipher.ENCRYPT_MODE, chaveDES);
-        
-        // Texto puro
-        byte[] textoPuro = "Exemplo de texto puro".getBytes();
+            // Cria a cifra
+            cifraDES = Cipher.getInstance("DES/ECB/PKCS5Padding");
 
-        System.out.println("Texto [Formato de Byte] : " + textoPuro);
-        System.out.println("Texto Puro : " + new String(textoPuro));
+            // Inicializa a cifra para o processo de encriptação
+            cifraDES.init(Cipher.ENCRYPT_MODE, chaveDES);
 
-        // Texto encriptado
-        byte[] textoEncriptado = cifraDES.doFinal(textoPuro);
+            //Chave sessão em bytes
+            byte[] chaveSessaoByte = textoParaCifrar.getBytes();
 
-        System.out.println("Texto Encriptado : " + textoEncriptado);
-        
-        // Inicializa a cifra também para o processo de decriptação
-        cifraDES.init(Cipher.DECRYPT_MODE, chaveDES);
+            System.out.println("\nTexto [Formato de Byte] : " + chaveSessaoByte);
+            System.out.println("Texto Puro : " + new String(textoParaCifrar));
 
-        // Decriptografa o texto
-        byte[] textoDecriptografado = cifraDES.doFinal(textoEncriptado);
+            // Texto encriptado
+            byte[] chaveSessaoEncriptada = cifraDES.doFinal(chaveSessaoByte);
 
-        System.out.println("Texto Decriptografado : " + new String(textoDecriptografado));
+            System.out.println("Texto Encriptado : " + chaveSessaoEncriptada);
+
+            // Inicializa a cifra também para o processo de decriptação
+            cifraDES.init(Cipher.DECRYPT_MODE, chaveDES);
+
+            // Decriptografa o texto
+            byte[] chaveSessaoDecriptografado = cifraDES.doFinal(chaveSessaoEncriptada);
+
+            System.out.println("Texto Decriptografado : " + new String(chaveSessaoDecriptografado));
+        } catch (Exception e) {
+            System.out.println("Erro ao cifrar: " + e.getMessage());
+        }
     }
     
     public void gerarTicket() {

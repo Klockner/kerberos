@@ -28,9 +28,6 @@ public class Cliente {
             Registry refSN = LocateRegistry.getRegistry("localhost", 1111);
             ClienteImplem clienteImplem = new ClienteImplem(refSN);
             
-            //Apenas teste
-            clienteImplem.echo("Hello world!");
-            
             //Id cliente e tempo de validade
             clienteImplem.solicitarAutenticacao("Gabriel", 10);
             

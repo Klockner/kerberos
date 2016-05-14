@@ -12,6 +12,7 @@ package database;
 public class Dados {
     private String idCliente = "Gabriel";
     private String chaveCliente = "abcdefg";
+    private String chaveTGS = "chavetgs";
 
     /**
      * @return the idCliente
@@ -39,6 +40,20 @@ public class Dados {
      */
     public void setChaveCliente(String chaveCliente) {
         this.chaveCliente = chaveCliente;
+    }
+
+    /**
+     * @return the chaveTGS
+     */
+    public String getChaveTGS() {
+        return chaveTGS;
+    }
+
+    /**
+     * @param chaveTGS the chaveTGS to set
+     */
+    public void setChaveTGS(String chaveTGS) {
+        this.chaveTGS = chaveTGS;
     }
     
 }

@@ -31,5 +31,4 @@ public class ServidorAutenticacaoAS {
         ServidorASImplem servASImpl = new ServidorASImplem();
         refSN.rebind("ServerAS", servASImpl);
     }
-    
 }
