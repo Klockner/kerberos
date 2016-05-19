@@ -29,7 +29,7 @@ public class Cliente {
             ClienteImplem clienteImplem = new ClienteImplem(refSN);
             
             //Id cliente e tempo de validade
-            clienteImplem.solicitarAutenticacao("Gabriel", 10);
+            clienteImplem.solicitarAutenticacao("gabrielcom16byte", 10);
             
         } catch (RemoteException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);

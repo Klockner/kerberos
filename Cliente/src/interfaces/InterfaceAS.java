@@ -14,7 +14,6 @@ import java.rmi.RemoteException;
  */
 public interface InterfaceAS extends Remote {
     
-    public void chamar(String texto, InterfaceCliente interfaceCliente) throws RemoteException;
     public void autenticar(String idCliente, InterfaceCliente interfaceCliente, 
-            InterfaceTGS interfaceTGS, int tempoValidade, int numeroAleatorio) throws RemoteException;
-}
+        InterfaceTGS interfaceTGS, int tempoValidade, int numeroAleatorio) throws RemoteException;
+    }

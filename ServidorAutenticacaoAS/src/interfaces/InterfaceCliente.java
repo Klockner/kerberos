@@ -13,5 +13,5 @@ import java.rmi.RemoteException;
  * @author Klockner
  */
 public interface InterfaceCliente extends Remote {
-    public void echo(String texto) throws RemoteException;
+    public void esperaResposta(byte[] respostaM2, byte[] TGT) throws RemoteException;
 }

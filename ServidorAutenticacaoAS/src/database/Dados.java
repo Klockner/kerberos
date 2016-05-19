@@ -5,15 +5,26 @@
  */
 package database;
 
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
  *
  * @author klockner
  */
-public class Dados {
-    private String idCliente = "Gabriel";
-    private String chaveCliente = "abcdefg";
-    private String chaveTGS = "chavetgs";
+public final class Dados {
+    private String idCliente = "gabrielcom16byte";
+    private String idTGS = "identidadedo_TGS";
+    private SecretKeySpec chaveTGS;
+    private SecretKeySpec chaveCliente;
 
+    public Dados() {
+        chaveCliente = gerarSecretKey(idCliente);
+        chaveTGS = gerarSecretKey(idTGS);
+    }
+    
     /**
      * @return the idCliente
      */
@@ -31,7 +42,7 @@ public class Dados {
     /**
      * @return the chaveCliente
      */
-    public String getChaveCliente() {
+    public SecretKeySpec getChaveCliente() {
         return chaveCliente;
     }
 
@@ -39,21 +50,56 @@ public class Dados {
      * @param chaveCliente the chaveCliente to set
      */
     public void setChaveCliente(String chaveCliente) {
-        this.chaveCliente = chaveCliente;
+        this.setChaveCliente(chaveCliente);
+    }
+
+    /**
+     * @return the idTGS
+     */
+    public String getIdTGS() {
+        return idTGS;
+    }
+
+    /**
+     * @param idTGS the idTGS to set
+     */
+    public void setIdTGS(String idTGS) {
+        this.idTGS = idTGS;
     }
 
     /**
      * @return the chaveTGS
      */
-    public String getChaveTGS() {
+    public SecretKeySpec getChaveTGS() {
         return chaveTGS;
     }
 
     /**
      * @param chaveTGS the chaveTGS to set
      */
-    public void setChaveTGS(String chaveTGS) {
+    public void setChaveTGS(SecretKeySpec chaveTGS) {
         this.chaveTGS = chaveTGS;
     }
+
+    /**
+     * @param chaveCliente the chaveCliente to set
+     */
+    public void setChaveCliente(SecretKeySpec chaveCliente) {
+        this.chaveCliente = chaveCliente;
+    }
     
+    /**
+     * 
+     * @param seed
+     * @return 
+     */
+    public SecretKeySpec gerarSecretKey(String seed) {
+        try {
+            SecretKeySpec secretKey = new SecretKeySpec(seed.getBytes("UTF-8"), "AES");
+            return secretKey;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }
