@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cliente;
+package JavaRMI;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -14,23 +14,25 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 public class Cliente {
-
+    
     /**
      * @param args the command line arguments
+     * @throws java.rmi.NotBoundException
      */
     public static void main(String[] args) throws NotBoundException {
-        // TODO code application logic here
-         try {
-            int portaSN = 1111;
+        try {
             //Para iniciar um serviço de nomes no servidor
-            Registry refSN = LocateRegistry.getRegistry("localhost", portaSN);
-            ClienteImplem cliImpl = new ClienteImplem(refSN);         
+            Registry refSN = LocateRegistry.getRegistry("localhost", 1111);
+            ClienteImplem clienteImplem = new ClienteImplem(refSN);
+            
+            //Id cliente e tempo de validade
+            clienteImplem.solicitarAutenticacao("gabrielcom16byte", 10);
+            
         } catch (RemoteException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
-    
 }

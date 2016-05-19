@@ -11,7 +11,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 
 /*Implementa a interface InterfaceSS*/

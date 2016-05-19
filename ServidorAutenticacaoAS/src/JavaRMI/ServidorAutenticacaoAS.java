@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servidortickettgs;
+package JavaRMI;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -13,7 +13,7 @@ import java.rmi.registry.Registry;
  *
  * @author Klockner
  */
-public class ServidorTicketTGS {
+public class ServidorAutenticacaoAS {
     static Registry refSN;
     
     /**
@@ -28,7 +28,7 @@ public class ServidorTicketTGS {
             refSN = LocateRegistry.createRegistry(1111);
         }
         
-        ServidorTGSImplem servTGSImpl = new ServidorTGSImplem();
-        refSN.rebind("ServerTGS", servTGSImpl);
+        ServidorASImplem servASImpl = new ServidorASImplem();
+        refSN.rebind("ServerAS", servASImpl);
     }
 }

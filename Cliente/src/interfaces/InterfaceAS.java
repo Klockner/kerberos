@@ -6,11 +6,14 @@
 package interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
- * @author JamilliF
+ * @author Klockner
  */
 public interface InterfaceAS extends Remote {
     
-}
+    public void autenticar(String idCliente, InterfaceCliente interfaceCliente, 
+        InterfaceTGS interfaceTGS, int tempoValidade, int numeroAleatorio) throws RemoteException;
+    }
