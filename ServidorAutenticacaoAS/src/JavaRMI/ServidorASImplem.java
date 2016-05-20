@@ -5,26 +5,17 @@
  */
 package JavaRMI;
 
+import Cifrador.Cifrador;
 import database.Dados;
 import interfaces.InterfaceAS;
 import interfaces.InterfaceCliente;
 import interfaces.InterfaceTGS;
-import java.io.UnsupportedEncodingException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -35,28 +26,30 @@ import javax.crypto.spec.SecretKeySpec;
 public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS {
     private final Dados database;
     private byte[] chaveSessao;
+    private final Cifrador cifrador;
     
     public ServidorASImplem() throws RemoteException {
         database = new Dados();
+        cifrador = new Cifrador();
     }
 
     @Override
     public void autenticar(String idCliente, InterfaceCliente interfaceCliente, 
-            InterfaceTGS interfaceTGS, int timeOut, int randomNumber) throws RemoteException {
+            InterfaceTGS interfaceTGS, int timeOut, int n1) throws RemoteException {
         if (idCliente.equals(database.getIdCliente())) {
             System.out.println("Usuário autenticado.");
             System.out.println("Identificação do CLIENTE: " + idCliente);
             System.out.println("Tempo de validade em minutos: " + timeOut);
-            System.out.println("Numero aleatório: " + randomNumber);
+            System.out.println("Numero aleatório N1: " + n1);
             //Se foi autenticado, responde o cliente
-            respostaAS(interfaceCliente, randomNumber, timeOut);
+            respostaAS(interfaceCliente, n1, timeOut);
         } else {
             System.out.println("Usuário não autenticado!");
         }
     }
 
     /**
-     * Envia resposta ao cliente, mensagem m2
+     * Envia resposta ao cliente, MENSAGEM M2
      * Contém a chave de sessão, o número aleatório enviado anteriormente pelo cliente 
      * (devem ser cifrados com a chave do cliente)
      * Também contém o TGT (deve ser cifrado com a chave do TGS)
@@ -72,9 +65,9 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
         String TGT = gerarTicketTGT(database.getIdCliente(), timeOut, keySession);
         String resposta = (keySession + " - " + randomNumber);
         System.out.println("Chave de sessão: " + keySession);
-        byte[] chaveSessaoTGS = cifrar(database.getIdCliente(), resposta);
-        byte[] TGTEncriptado = cifrar(database.getIdTGS(), TGT);
-        interfaceCliente.esperaResposta(chaveSessaoTGS, TGTEncriptado);
+        byte[] mensagem = cifrador.cifrar(database.getChaveCliente(), resposta);
+        byte[] TGTEncriptado = cifrador.cifrar(database.getChaveTGS(), TGT);
+        interfaceCliente.esperaResposta(mensagem, TGTEncriptado);
     }
     
     /**
@@ -91,40 +84,11 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
             String dataHoraCliente = dataHora + database.getIdCliente();
             md.update(dataHoraCliente.getBytes());
             chaveSessao = md.digest();
-            //TODO why? 12345
-            String keySession = Arrays.toString(chaveSessao) + "12345";
+            String keySession = chaveSessao.toString();
             return keySession;
             
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Erro ao gerar chave de sessão: " + e.getMessage());
-            return null;
-        }
-    }
-    
-    /**
-     * Cifrar chave da sessao e numero aleatório para para utilizar no TGS
-     * 
-     * @param chave
-     * @param mensagem
-     * @return 
-     */
-    public byte[] cifrar(String chave, String mensagem) {
-        try {
-            Cipher cipher;
-            String initVector = "RandomInitVector";
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
-            byte[] texto = mensagem.getBytes("UTF-8");
-            SecretKeySpec secretKey = new SecretKeySpec(chave.getBytes("UTF-8"), "AES");
-            cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
-            
-            byte[]  textoCriptografado = cipher.doFinal(texto);
-            return textoCriptografado;
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException |
-                NoSuchPaddingException | InvalidKeyException |
-                InvalidAlgorithmParameterException | IllegalBlockSizeException |
-                BadPaddingException e) {
-            System.out.println("Erro ao cifrar: " + e.getMessage());
             return null;
         }
     }
