@@ -13,5 +13,6 @@ import java.rmi.RemoteException;
  * @author Klockner
  */
 public interface InterfaceTGS extends Remote {
-    void recebeMensagemM3(byte[] mensagem, byte[] ticketTGT, String idServidor, int n2) throws RemoteException;
+    public void recebeMensagemClienteTgsM3(InterfaceCliente refCliente, byte[] mensagemCripto,
+            byte[] ticketTGT, String idServidor, int n2) throws RemoteException;
 }

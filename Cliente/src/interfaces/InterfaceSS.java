@@ -6,11 +6,12 @@
 package interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
  * @author Klockner
  */
 public interface InterfaceSS extends Remote {
-    
+    public void receberPermissao(InterfaceCliente interfaceCliente, byte [] cT, byte[] ticket, String request)throws RemoteException;
 }
