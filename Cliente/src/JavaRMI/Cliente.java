@@ -26,7 +26,10 @@ public class Cliente {
         try {
             //Para iniciar um serviço de nomes no servidor
             Registry refSN = LocateRegistry.getRegistry("localhost", 1111);
-            ClienteImplem clienteImplem = new ClienteImplem(refSN);
+            Registry refSN2 = LocateRegistry.getRegistry("localhost", 1112);
+            Registry refSN3 = LocateRegistry.getRegistry("localhost", 1113);
+            
+            ClienteImplem clienteImplem = new ClienteImplem(refSN, refSN2, refSN3);
             
             //Id cliente e tempo de validade
             clienteImplem.solicitarAutenticacao("gabrielcom16byte", 10);

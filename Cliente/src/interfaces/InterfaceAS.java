@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
  * @author Klockner
  */
 public interface InterfaceAS extends Remote {
-    
-    public void autenticar(String idCliente, InterfaceCliente interfaceCliente, 
-        InterfaceTGS interfaceTGS, int tempoValidade, int numeroAleatorio) throws RemoteException;
-    }
+
+    public void autenticar(String idCliente, InterfaceCliente interfaceCliente,
+            InterfaceTGS interfaceTGS, int tempoValidade, int numeroAleatorio) throws RemoteException;
+}

@@ -33,6 +33,7 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
         cifrador = new Cifrador();
     }
 
+    //M1 acontecendo
     @Override
     public void autenticar(String idCliente, InterfaceCliente interfaceCliente, 
             InterfaceTGS interfaceTGS, int timeOut, int n1) throws RemoteException {
@@ -41,7 +42,7 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
             System.out.println("Identificação do CLIENTE: " + idCliente);
             System.out.println("Tempo de validade em minutos: " + timeOut);
             System.out.println("Numero aleatório N1: " + n1);
-            //Se foi autenticado, responde o cliente
+            //Se foi autenticado, responde o cliente.. aqui é enviado M2
             respostaAS(interfaceCliente, n1, timeOut);
         } else {
             System.out.println("Usuário não autenticado!");
@@ -64,10 +65,10 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
         keySession = gerarChaveSessao();
         String TGT = gerarTicketTGT(database.getIdCliente(), timeOut, keySession);
         String resposta = (keySession + " - " + randomNumber);
-        System.out.println("Chave de sessão: " + keySession);
-        byte[] mensagem = cifrador.cifrar(database.getChaveCliente(), resposta);
-        byte[] TGTEncriptado = cifrador.cifrar(database.getChaveTGS(), TGT);
-        interfaceCliente.esperaResposta(mensagem, TGTEncriptado);
+        byte[] respostaCripto = cifrador.cifrar(database.getChaveCliente(), resposta);
+        byte[] TGTCripto = cifrador.cifrar(database.getChaveTGS(), TGT);
+        //Cliente recebe M2
+        interfaceCliente.esperaRespostaAS(respostaCripto, TGTCripto);
     }
     
     /**
@@ -84,7 +85,7 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
             String dataHoraCliente = dataHora + database.getIdCliente();
             md.update(dataHoraCliente.getBytes());
             chaveSessao = md.digest();
-            String keySession = chaveSessao.toString();
+            String keySession = chaveSessao.toString() + "12345";
             return keySession;
             
         } catch (NoSuchAlgorithmException e) {
@@ -94,9 +95,9 @@ public class ServidorASImplem extends UnicastRemoteObject implements InterfaceAS
     }
     
     /**
-        1. a chave de sessão a ser usada na comunicação com o TGS (kc−tgs) 
-        e o número aleatório n1,
-        ambos cifrados com a chave do cliente kc registrada no AS; 
+     *   A chave de sessão a ser usada na comunicação com o TGS (kc−tgs) 
+     *   e o número aleatório n1,
+     *   ambos cifrados com a chave do cliente kc registrada no AS; 
      * @param idCliente
      * @param timeOut
      * @param chaveSessao
